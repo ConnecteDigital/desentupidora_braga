@@ -10,6 +10,7 @@ tamanhos certos. Enquanto uma foto não existir, aparece um bloco azul com ícon
 - `caminhao.jpg` – caminhão limpa fossa (usada se não houver equipe.jpg)
 
 ## servicos/  (uma por serviço)
+- `desentupimento-de-pia.jpg`
 - `desentupimento-de-ralo.jpg`
 - `desentupimento-de-vaso-sanitario.jpg`
 - `desentupimento-de-cano.jpg`

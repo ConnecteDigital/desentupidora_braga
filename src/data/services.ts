@@ -16,6 +16,37 @@ export interface Service {
 
 export const services: Service[] = [
   {
+    slug: 'desentupimento-de-pia',
+    name: 'Desentupimento de Pia',
+    keyword: 'desentupimento de pia',
+    group: 'desentupimento',
+    icon: 'sink',
+    short: 'Pia de cozinha, lavatório e tanque desentupidos na hora, sem quebrar azulejo.',
+    intro: [
+      'Pia entupida é o chamado mais comum de qualquer desentupidora. Na cozinha, a causa quase sempre é a gordura que esfria e endurece no sifão e no cano, junto com restos de comida e borra de café. No banheiro, o lavatório entope com cabelo, creme dental e sabonete.',
+      'A Desentupidora Braga resolve entupimentos de pia de cozinha, lavatório de banheiro e tanque com sondas e máquinas rotativas. Quando a gordura já tomou conta da tubulação, usamos hidrojateamento para limpar o cano por inteiro e evitar que o problema volte em poucos dias.',
+    ],
+    signs: [
+      'Água parada na cuba depois de lavar a louça',
+      'Pia escoando cada vez mais devagar',
+      'Cheiro ruim saindo do ralo da pia',
+      'Barulho de borbulhas ao escoar a água',
+      'Água voltando pelo ralo do tanque ou da área de serviço',
+    ],
+    process: [
+      { title: 'Avaliação', text: 'Verificamos se o entupimento está no sifão, no cano da parede ou na caixa de gordura.' },
+      { title: 'Sifão', text: 'Desmontamos e limpamos o sifão quando necessário.' },
+      { title: 'Desobstrução', text: 'Sonda ou máquina rotativa remove a gordura e os resíduos do cano.' },
+      { title: 'Teste', text: 'Testamos com água corrente e quente antes de liberar a pia.' },
+    ],
+    causes: ['Gordura e óleo de cozinha', 'Restos de comida e borra de café', 'Cabelo, creme dental e sabonete no lavatório', 'Caixa de gordura cheia', 'Objetos pequenos que caem no ralo'],
+    faq: [
+      { q: 'Precisa quebrar a parede para desentupir a pia?', a: 'Não na grande maioria dos casos. O acesso é feito pelo sifão e pelo próprio cano, sem quebrar azulejo.' },
+      { q: 'A pia da cozinha entope toda hora, por quê?', a: 'Normalmente por gordura acumulada no cano ou caixa de gordura cheia. Limpamos o trecho todo e indicamos a limpeza da caixa quando necessário.' },
+      { q: 'Posso usar soda cáustica na pia?', a: 'Não é recomendado. A soda danifica canos de PVC, é perigosa e não remove a gordura que já endureceu mais adiante.' },
+    ],
+  },
+  {
     slug: 'desentupimento-de-ralo',
     name: 'Desentupimento de Ralo',
     keyword: 'desentupimento de ralo',
@@ -300,7 +331,7 @@ export const services: Service[] = [
 export const groups: Record<ServiceGroup, { title: string; text: string }> = {
   desentupimento: {
     title: 'Desentupimento',
-    text: 'Ralos, vasos, canos, esgoto, redes e colunas de prédios.',
+    text: 'Pias, ralos, vasos, canos, esgoto, redes e colunas de prédios.',
   },
   limpeza: {
     title: 'Limpa Fossa e Limpeza',

@@ -26,7 +26,7 @@ Na Vercel: importar o repositório, framework **Astro**, sem configuração extr
 ## Páginas geradas
 
 - `/` início · `/sobre/` · `/contato/` · `/area-de-atendimento/` · `/blog/`
-- `/servicos/` e `/servicos/{servico}/` – 9 serviços
+- `/servicos/` e `/servicos/{servico}/` – 10 serviços
 - `/desentupidora-em-{cidade}/` – 13 cidades
 - `/desentupidora-em-porto-alegre/{bairro}/` – 50 bairros
 - `/{servico}-em-{cidade}/` – serviço + cidade (ex.: `/limpeza-de-fossa-em-canoas/`)
