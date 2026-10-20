@@ -21,10 +21,10 @@ export const site = {
   gtmId: '',
 };
 
-export function whatsappLink(message?: string) {
-  const text =
-    message ?? `Olá! Vim pelo site da ${site.name} e preciso de um atendimento.`;
-  return `https://wa.me/${site.phone}?text=${encodeURIComponent(text)}`;
+export const whatsappMessage = 'Olá, Vim pelo site, Desentupidora Braga, e gostaria de um atendimento Urgente !';
+
+export function whatsappLink() {
+  return `https://api.whatsapp.com/send?phone=${site.phone}&text=${encodeURIComponent(whatsappMessage)}`;
 }
 
 export const highlights = [

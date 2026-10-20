@@ -4,12 +4,10 @@ import { site, whatsappLink } from '../data/site';
 interface Props {
   title?: string;
   text?: string;
-  whatsMessage?: string;
 }
 const {
   title = 'Entupiu? A gente resolve agora.',
   text = `Equipe de plantão 24 horas e chegada em ${site.arrival}. Fale com a gente pelo WhatsApp ou ligue.`,
-  whatsMessage,
 } = Astro.props;
 ---
 <section class="cta">
@@ -19,7 +17,7 @@ const {
       <p>{text}</p>
     </div>
     <div class="btn-row">
-      <a class="btn btn--wa" href={whatsappLink(whatsMessage)} target="_blank" rel="noopener"><Icon name="whatsapp" size={22} /> WhatsApp</a>
+      <a class="btn btn--wa" href={whatsappLink()} target="_blank" rel="noopener"><Icon name="whatsapp" size={22} /> WhatsApp</a>
       <a class="btn btn--light" href={site.phoneHref}><Icon name="phone" size={20} /> {site.phoneDisplay}</a>
     </div>
   </div>

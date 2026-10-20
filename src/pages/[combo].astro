@@ -26,7 +26,6 @@ const faq = [
   ...s.faq,
   { q: `Como pedir orçamento em ${city.name}?`, a: `Chame no WhatsApp ou ligue para ${site.phoneDisplay}, informe o endereço em ${city.name} e descreva o problema. A equipe orienta e passa o orçamento.` },
 ];
-const msg = `Olá! Preciso de ${s.name.toLowerCase()} em ${city.name}.`;
 ---
 <Layout
   title={`${s.name} em ${city.name} 24h | Desentupidora Braga`}
@@ -40,8 +39,7 @@ const msg = `Olá! Preciso de ${s.name.toLowerCase()} em ${city.name}.`;
     title={`${s.name} em <em>${city.name}</em>`}
     subtitle={`${s.short} Atendimento 24 horas em ${city.name} com chegada em ${site.arrival}.`}
     fotoKeys={[`servicos/${s.slug}`, `cidades/${city.slug}`]}
-    whatsMessage={msg}
   />
   <ServiceDetail service={s} city={city} faq={faq} />
-  <CtaBand title={`${s.name} em ${city.name}, agora.`} whatsMessage={msg} />
+  <CtaBand title={`${s.name} em ${city.name}, agora.`} />
 </Layout>

@@ -27,7 +27,6 @@ const crumbs = [
   { name: 'Porto Alegre', href: '/desentupidora-em-porto-alegre/' },
   { name: bairro.name, href: path },
 ];
-const msg = `Olá! Preciso de uma desentupidora no bairro ${bairro.name}, Porto Alegre.`;
 
 const faq = [
   { q: `Vocês atendem o bairro ${bairro.name} a qualquer hora?`, a: `Sim. Atendemos o bairro ${bairro.name} e toda a ${zona.name} de Porto Alegre 24 horas por dia, inclusive fins de semana e feriados.` },
@@ -48,7 +47,6 @@ const faq = [
     title={`Desentupidora ${bairro.em.split(' ')[0]} <em>${bairro.name}</em>, Porto Alegre`}
     subtitle={`Desentupimento e limpa fossa ${bairro.em} com atendimento 24 horas e chegada em ${site.arrival}.`}
     fotoKeys={[`cidades/porto-alegre`]}
-    whatsMessage={msg}
   />
   <Highlights />
 
@@ -68,7 +66,7 @@ const faq = [
           ))}
         </ul>
       </div>
-      <ContactBox title={`Desentupidora ${bairro.em} agora`} whatsMessage={msg} />
+      <ContactBox title={`Desentupidora ${bairro.em} agora`} />
     </div>
   </section>
 
@@ -99,7 +97,7 @@ const faq = [
     </div>
   </section>
 
-  <CtaBand title={`Entupiu ${bairro.em}? Chame agora.`} whatsMessage={msg} />
+  <CtaBand title={`Entupiu ${bairro.em}? Chame agora.`} />
 </Layout>
 
 <style>

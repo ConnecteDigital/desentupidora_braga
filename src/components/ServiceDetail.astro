@@ -19,7 +19,6 @@ interface Props {
 const { service: s, city, faq } = Astro.props;
 const where = city ? ` em ${city.name}` : '';
 const others = services.filter((x) => x.slug !== s.slug);
-const msg = `Olá! Preciso de ${s.name.toLowerCase()}${where}.`;
 ---
 <section class="section">
   <div class="container two-col">
@@ -58,7 +57,7 @@ const msg = `Olá! Preciso de ${s.name.toLowerCase()}${where}.`;
         </>
       )}
     </article>
-    <ContactBox title={`${s.name}${where} agora`} whatsMessage={msg} />
+    <ContactBox title={`${s.name}${where} agora`} />
   </div>
 </section>
 

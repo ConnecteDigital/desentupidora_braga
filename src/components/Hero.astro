@@ -11,10 +11,9 @@ interface Props {
   eyebrow?: string;
   fotoKeys?: (string | undefined)[];
   crumbs?: Crumb[];
-  whatsMessage?: string;
   home?: boolean;
 }
-const { title, subtitle, eyebrow, fotoKeys = [], crumbs, whatsMessage, home = false } = Astro.props;
+const { title, subtitle, eyebrow, fotoKeys = [], crumbs, home = false } = Astro.props;
 ---
 <section class:list={['hero', { 'hero--home': home }]}>
   <div class="hero__bg">
@@ -26,12 +25,12 @@ const { title, subtitle, eyebrow, fotoKeys = [], crumbs, whatsMessage, home = fa
     <h1 set:html={title} />
     <p class="hero__sub">{subtitle}</p>
     <div class="btn-row">
-      <a class="btn btn--wa" href={whatsappLink(whatsMessage)} target="_blank" rel="noopener"><Icon name="whatsapp" size={22} /> Chamar no WhatsApp</a>
+      <a class="btn btn--wa" href={whatsappLink()} target="_blank" rel="noopener"><Icon name="whatsapp" size={22} /> Chamar no WhatsApp</a>
       <a class="btn btn--call" href={site.phoneHref}><Icon name="phone" size={20} /> Ligar {site.phoneDisplay}</a>
     </div>
     <ul class="hero__chips">
       <li><Icon name="clock" size={18} /> 24 horas</li>
-      <li><Icon name="bolt" size={18} /> Chegamos em {site.arrival}</li>
+      <li><Icon name="bolt" size={18} /> Chegamos em {site.arrival.replace('minutos', 'min')}</li>
       <li><Icon name="siren" size={18} /> Emergência</li>
     </ul>
   </div>
@@ -77,6 +76,20 @@ const { title, subtitle, eyebrow, fotoKeys = [], crumbs, whatsMessage, home = fa
   .hero--home .hero__inner {
     padding-top: 96px;
     padding-bottom: 104px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .hero--home .hero__bg::after {
+    background: rgba(5, 12, 28, 0.62);
+  }
+  .hero--home .hero__sub {
+    max-width: 560px;
+  }
+  .hero--home .btn-row,
+  .hero--home .hero__chips {
+    justify-content: center;
   }
   .hero h1 {
     color: #fff;
@@ -113,7 +126,7 @@ const { title, subtitle, eyebrow, fotoKeys = [], crumbs, whatsMessage, home = fa
   }
   .hero__chips {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 18px;
     list-style: none;
     padding: 0;
@@ -136,6 +149,18 @@ const { title, subtitle, eyebrow, fotoKeys = [], crumbs, whatsMessage, home = fa
     }
     .hero .btn {
       width: 100%;
+    }
+    .hero__chips {
+      gap: 12px;
+      font-size: 0.8rem;
+    }
+    .hero__chips li {
+      gap: 4px;
+      white-space: nowrap;
+    }
+    .hero__chips :global(svg) {
+      width: 15px;
+      height: 15px;
     }
   }
 </style>

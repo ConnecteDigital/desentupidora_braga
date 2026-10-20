@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import Icon from '../components/Icon.astro';
-import { site, whatsappLink } from '../data/site';
+import { site, whatsappLink, whatsappMessage } from '../data/site';
 import { services } from '../data/services';
 import { cities } from '../data/cities';
 
@@ -69,12 +69,12 @@ const crumbs = [{ name: 'Contato', href: '/contato/' }];
   </section>
 </Layout>
 
-<script define:vars={{ phone: site.phone }}>
+<script define:vars={{ phone: site.phone, greeting: whatsappMessage }}>
   document.getElementById('form-contato').addEventListener('submit', function (e) {
     e.preventDefault();
     var f = new FormData(e.target);
     var text =
-      'Olá! Vim pelo site e gostaria de um orçamento.\n' +
+      greeting + '\n\n' +
       '*Nome:* ' + f.get('nome') + '\n' +
       '*Telefone:* ' + f.get('telefone') + '\n' +
       '*Serviço:* ' + f.get('servico') + '\n' +
@@ -83,7 +83,7 @@ const crumbs = [{ name: 'Contato', href: '/contato/' }];
       (f.get('mensagem') ? '*Detalhes:* ' + f.get('mensagem') : '');
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ event: 'envio_formulario', servico: f.get('servico'), cidade: f.get('cidade') });
-    window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(text), '_blank');
+    window.open('https://api.whatsapp.com/send?phone=' + phone + '&text=' + encodeURIComponent(text), '_blank');
   });
 </script>
 

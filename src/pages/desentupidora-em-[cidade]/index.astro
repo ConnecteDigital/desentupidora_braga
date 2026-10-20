@@ -26,7 +26,6 @@ const crumbs = [
   { name: city.name, href: path },
 ];
 const nearby = city.nearby.map(getCity);
-const msg = `Olá! Preciso de uma desentupidora em ${city.name}.`;
 
 const faq = [
   { q: `Vocês atendem 24 horas em ${city.name}?`, a: `Sim. Atendemos ${city.name} 24 horas por dia, todos os dias da semana, inclusive feriados.` },
@@ -48,7 +47,6 @@ const faq = [
     title={`Desentupidora em <em>${city.name}</em> 24 horas`}
     subtitle={`Desentupimento e limpa fossa em ${city.name} com chegada em ${site.arrival}. Atendimento emergencial de dia, de noite e nos fins de semana.`}
     fotoKeys={[`cidades/${city.slug}`]}
-    whatsMessage={msg}
   />
   <Highlights />
 
@@ -77,7 +75,7 @@ const faq = [
           </>
         )}
       </div>
-      <ContactBox title={`Desentupidora em ${city.name} agora`} whatsMessage={msg} />
+      <ContactBox title={`Desentupidora em ${city.name} agora`} />
     </div>
   </section>
 
@@ -134,7 +132,7 @@ const faq = [
     </div>
   </section>
 
-  <CtaBand title={`Entupiu em ${city.name}? Chame agora.`} whatsMessage={msg} />
+  <CtaBand title={`Entupiu em ${city.name}? Chame agora.`} />
 </Layout>
 
 <style>

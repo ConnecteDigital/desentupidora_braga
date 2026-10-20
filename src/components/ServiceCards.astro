@@ -24,7 +24,7 @@ const href = (s: Service) => (city ? `/${s.slug}-em-${city.slug}/` : `/servicos/
         <p>{s.short}</p>
         <div class="svc__actions">
           <a class="btn btn--ghost btn--sm" href={href(s)}>Saiba mais <Icon name="arrow" size={16} /></a>
-          <a class="btn btn--wa btn--sm" href={whatsappLink(`Olá! Preciso de ${s.name.toLowerCase()}${city ? ` em ${city.name}` : ''}.`)} target="_blank" rel="noopener"><Icon name="whatsapp" size={16} /> Orçamento</a>
+          <a class="btn btn--wa btn--sm" href={whatsappLink()} target="_blank" rel="noopener"><Icon name="whatsapp" size={16} /> Orçamento</a>
         </div>
       </div>
     </article>
