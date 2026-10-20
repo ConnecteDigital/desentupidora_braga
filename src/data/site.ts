@@ -6,7 +6,7 @@ export const site = {
   url: 'https://desentupidorabraga.com.br',
   phone: '5551985515822',
   phoneDisplay: '(51) 98551-5822',
-  phoneHref: 'tel:+5551985515822',
+  phoneHref: 'tel:051985515822',
   // Preencher quando o cliente enviar
   email: '',
   cnpj: '',
