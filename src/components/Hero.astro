@@ -1,0 +1,140 @@
+---
+import Icon from './Icon.astro';
+import Foto from './Foto.astro';
+import Breadcrumbs from './Breadcrumbs.astro';
+import { site, whatsappLink } from '../data/site';
+import type { Crumb } from '../layouts/Layout.astro';
+
+interface Props {
+  title: string;
+  subtitle: string;
+  eyebrow?: string;
+  fotoKeys?: (string | undefined)[];
+  crumbs?: Crumb[];
+  whatsMessage?: string;
+  home?: boolean;
+}
+const { title, subtitle, eyebrow, fotoKeys = [], crumbs, whatsMessage, home = false } = Astro.props;
+---
+<section class:list={['hero', { 'hero--home': home }]}>
+  <div class="hero__bg">
+    <Foto keys={[...fotoKeys, 'geral/hero']} alt="" icon="truck" widths={[800, 1400, 1920]} sizes="100vw" eager class="hero__img" />
+  </div>
+  <div class="container hero__inner">
+    {crumbs && <Breadcrumbs crumbs={crumbs} light />}
+    {eyebrow && <span class="hero__eyebrow"><span class="dot"></span>{eyebrow}</span>}
+    <h1 set:html={title} />
+    <p class="hero__sub">{subtitle}</p>
+    <div class="btn-row">
+      <a class="btn btn--wa" href={whatsappLink(whatsMessage)} target="_blank" rel="noopener"><Icon name="whatsapp" size={22} /> Chamar no WhatsApp</a>
+      <a class="btn btn--call" href={site.phoneHref}><Icon name="phone" size={20} /> Ligar {site.phoneDisplay}</a>
+    </div>
+    <ul class="hero__chips">
+      <li><Icon name="clock" size={18} /> 24 horas</li>
+      <li><Icon name="bolt" size={18} /> Chegamos em {site.arrival}</li>
+      <li><Icon name="siren" size={18} /> Emergência</li>
+    </ul>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    color: #e6eef8;
+    overflow: hidden;
+    background: var(--navy);
+  }
+  .hero__bg {
+    position: absolute;
+    inset: 0;
+  }
+  .hero__bg :global(.hero__img) {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
+    object-fit: cover;
+  }
+  .hero__bg :global(.foto--placeholder) {
+    background:
+      radial-gradient(circle at 85% 20%, rgba(255, 107, 0, 0.25), transparent 35%),
+      radial-gradient(circle at 10% 90%, rgba(21, 101, 216, 0.45), transparent 45%),
+      linear-gradient(135deg, #071a31, #12355f);
+    color: transparent;
+  }
+  .hero__bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(7, 26, 49, 0.94) 0%, rgba(7, 26, 49, 0.8) 55%, rgba(7, 26, 49, 0.45) 100%);
+  }
+  .hero__inner {
+    position: relative;
+    padding-top: 56px;
+    padding-bottom: 64px;
+    max-width: var(--container);
+  }
+  .hero--home .hero__inner {
+    padding-top: 96px;
+    padding-bottom: 104px;
+  }
+  .hero h1 {
+    color: #fff;
+    max-width: 820px;
+  }
+  .hero h1 :global(em) {
+    font-style: normal;
+    color: var(--accent);
+  }
+  .hero__sub {
+    font-size: 1.15rem;
+    max-width: 640px;
+    color: #c9d7e8;
+    margin-bottom: 28px;
+  }
+  .hero__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 18px;
+  }
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #3ee07a;
+    box-shadow: 0 0 0 4px rgba(62, 224, 122, 0.25);
+  }
+  .hero__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    list-style: none;
+    padding: 0;
+    margin: 26px 0 0;
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+  .hero__chips li {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .hero__chips :global(svg) {
+    color: var(--accent);
+  }
+  @media (max-width: 720px) {
+    .hero--home .hero__inner {
+      padding-top: 56px;
+      padding-bottom: 60px;
+    }
+    .hero .btn {
+      width: 100%;
+    }
+  }
+</style>

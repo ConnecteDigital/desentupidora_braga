@@ -1,0 +1,42 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Hero from '../../components/Hero.astro';
+import ServiceDetail from '../../components/ServiceDetail.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { services, type Service } from '../../data/services';
+import { cities } from '../../data/cities';
+import { site } from '../../data/site';
+import { faqSchema, serviceSchema } from '../../lib/schema';
+
+export function getStaticPaths() {
+  return services.map((service) => ({ params: { slug: service.slug }, props: { service } }));
+}
+
+const { service: s } = Astro.props as { service: Service };
+const path = `/servicos/${s.slug}/`;
+const crumbs = [
+  { name: 'Serviços', href: '/servicos/' },
+  { name: s.name, href: path },
+];
+const faq = [
+  ...s.faq,
+  { q: `Vocês fazem ${s.name.toLowerCase()} 24 horas?`, a: `Sim. Atendemos 24 horas em Porto Alegre e região, com equipe de plantão que chega em cerca de ${site.arrival}.` },
+];
+---
+<Layout
+  title={`${s.name} em Porto Alegre 24h | Desentupidora Braga`}
+  description={`${s.name} em Porto Alegre e região 24 horas. ${s.short} Chegamos em ${site.arrival}. Ligue ${site.phoneDisplay}.`}
+  crumbs={crumbs}
+  schema={[serviceSchema(s.name, s.short, cities.map((c) => c.name), path), faqSchema(faq)]}
+>
+  <Hero
+    crumbs={crumbs}
+    eyebrow="Atendimento 24 horas"
+    title={`${s.name} em <em>Porto Alegre</em>`}
+    subtitle={s.short}
+    fotoKeys={[`servicos/${s.slug}`]}
+    whatsMessage={`Olá! Preciso de ${s.name.toLowerCase()}.`}
+  />
+  <ServiceDetail service={s} faq={faq} />
+  <CtaBand title={`Precisa de ${s.name.toLowerCase()} agora?`} whatsMessage={`Olá! Preciso de ${s.name.toLowerCase()}.`} />
+</Layout>

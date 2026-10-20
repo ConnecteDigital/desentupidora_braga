@@ -1,0 +1,192 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Icon from '../components/Icon.astro';
+import { site, whatsappLink } from '../data/site';
+import { services } from '../data/services';
+import { cities } from '../data/cities';
+
+const crumbs = [{ name: 'Contato', href: '/contato/' }];
+---
+<Layout
+  title="Contato | Desentupidora Braga 24h em Porto Alegre"
+  description={`Fale com a Desentupidora Braga: WhatsApp e telefone ${site.phoneDisplay}. Atendimento 24 horas em Porto Alegre e região, chegamos em ${site.arrival}.`}
+  crumbs={crumbs}
+>
+  <Hero crumbs={crumbs} title="Fale com a <em>Desentupidora Braga</em>" subtitle="Atendimento 24 horas pelo WhatsApp e telefone. Para emergências, ligue: é o caminho mais rápido." />
+
+  <section class="section">
+    <div class="container contact">
+      <div class="contact__cards">
+        <a class="card ccard" href={whatsappLink()} target="_blank" rel="noopener">
+          <span class="ccard__icon ccard__icon--wa"><Icon name="whatsapp" size={28} /></span>
+          <div><p class="ccard__label">WhatsApp</p><p class="ccard__value">{site.phoneDisplay}</p></div>
+        </a>
+        <a class="card ccard" href={site.phoneHref}>
+          <span class="ccard__icon"><Icon name="phone" size={26} /></span>
+          <div><p class="ccard__label">Telefone 24h</p><p class="ccard__value">{site.phoneDisplay}</p></div>
+        </a>
+        {site.email && (
+          <a class="card ccard" href={`mailto:${site.email}`}>
+            <span class="ccard__icon"><Icon name="mail" size={26} /></span>
+            <div><p class="ccard__label">E-mail</p><p class="ccard__value">{site.email}</p></div>
+          </a>
+        )}
+        <div class="card ccard">
+          <span class="ccard__icon"><Icon name="clock" size={26} /></span>
+          <div><p class="ccard__label">Horário</p><p class="ccard__value">24 horas, todos os dias</p></div>
+        </div>
+        <div class="card ccard">
+          <span class="ccard__icon"><Icon name="pin" size={26} /></span>
+          <div><p class="ccard__label">Atendimento</p><p class="ccard__value">{site.region}</p></div>
+        </div>
+      </div>
+
+      <form class="form" id="form-contato">
+        <h2>Solicite um orçamento</h2>
+        <p>Preencha e envie: sua mensagem abre direto no nosso WhatsApp.</p>
+        <label>Nome<input name="nome" required autocomplete="name" /></label>
+        <label>Telefone<input name="telefone" type="tel" required autocomplete="tel" /></label>
+        <div class="form__row">
+          <label>Serviço
+            <select name="servico">
+              {services.map((s) => <option>{s.name}</option>)}
+              <option>Outro</option>
+            </select>
+          </label>
+          <label>Cidade
+            <select name="cidade">
+              {cities.map((c) => <option>{c.name}</option>)}
+              <option>Outra</option>
+            </select>
+          </label>
+        </div>
+        <label>Bairro / endereço<input name="endereco" autocomplete="street-address" /></label>
+        <label>O que está acontecendo?<textarea name="mensagem" rows="4"></textarea></label>
+        <button class="btn btn--wa" type="submit"><Icon name="whatsapp" size={20} /> Enviar pelo WhatsApp</button>
+      </form>
+    </div>
+  </section>
+</Layout>
+
+<script define:vars={{ phone: site.phone }}>
+  document.getElementById('form-contato').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var f = new FormData(e.target);
+    var text =
+      'Olá! Vim pelo site e gostaria de um orçamento.\n' +
+      '*Nome:* ' + f.get('nome') + '\n' +
+      '*Telefone:* ' + f.get('telefone') + '\n' +
+      '*Serviço:* ' + f.get('servico') + '\n' +
+      '*Cidade:* ' + f.get('cidade') + '\n' +
+      (f.get('endereco') ? '*Endereço:* ' + f.get('endereco') + '\n' : '') +
+      (f.get('mensagem') ? '*Detalhes:* ' + f.get('mensagem') : '');
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: 'envio_formulario', servico: f.get('servico'), cidade: f.get('cidade') });
+    window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(text), '_blank');
+  });
+</script>
+
+<style>
+  .contact {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 40px;
+    align-items: start;
+  }
+  .contact__cards {
+    display: grid;
+    gap: 14px;
+  }
+  .ccard {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    text-decoration: none;
+    color: var(--text);
+  }
+  .ccard__icon {
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    background: #fff1e6;
+    color: var(--accent);
+    flex: none;
+  }
+  .ccard__icon--wa {
+    background: #e6f7ec;
+    color: var(--wa);
+  }
+  .ccard p {
+    margin: 0;
+  }
+  .ccard__label {
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .ccard__value {
+    font-family: var(--font-head);
+    font-weight: 700;
+    color: var(--navy);
+    font-size: 1.1rem;
+  }
+  .form {
+    background: var(--bg-soft);
+    border-radius: 20px;
+    padding: 32px;
+    display: grid;
+    gap: 14px;
+  }
+  .form h2 {
+    margin: 0;
+  }
+  .form p {
+    margin: 0 0 6px;
+    color: var(--muted);
+  }
+  .form label {
+    display: grid;
+    gap: 6px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--navy);
+  }
+  .form input,
+  .form select,
+  .form textarea {
+    font: inherit;
+    font-weight: 400;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: #fff;
+    width: 100%;
+  }
+  .form input:focus,
+  .form select:focus,
+  .form textarea:focus {
+    outline: 2px solid var(--blue);
+    border-color: transparent;
+  }
+  .form__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  @media (max-width: 860px) {
+    .contact {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 480px) {
+    .form {
+      padding: 22px;
+    }
+    .form__row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

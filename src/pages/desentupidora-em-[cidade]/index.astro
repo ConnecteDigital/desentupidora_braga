@@ -1,0 +1,185 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Hero from '../../components/Hero.astro';
+import Highlights from '../../components/Highlights.astro';
+import ServiceCards from '../../components/ServiceCards.astro';
+import FAQ from '../../components/FAQ.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import ContactBox from '../../components/ContactBox.astro';
+import CityLinks from '../../components/CityLinks.astro';
+import Icon from '../../components/Icon.astro';
+import { cities, getCity, type City } from '../../data/cities';
+import { services } from '../../data/services';
+import { bairros, zonas, bairrosDaZona, type Zona } from '../../data/bairros';
+import { site } from '../../data/site';
+import { faqSchema } from '../../lib/schema';
+
+export function getStaticPaths() {
+  return cities.map((city) => ({ params: { cidade: city.slug }, props: { city } }));
+}
+
+const { city } = Astro.props as { city: City };
+const isPoa = city.slug === 'porto-alegre';
+const path = `/desentupidora-em-${city.slug}/`;
+const crumbs = [
+  { name: 'Área de atendimento', href: '/area-de-atendimento/' },
+  { name: city.name, href: path },
+];
+const nearby = city.nearby.map(getCity);
+const msg = `Olá! Preciso de uma desentupidora em ${city.name}.`;
+
+const faq = [
+  { q: `Vocês atendem 24 horas em ${city.name}?`, a: `Sim. Atendemos ${city.name} 24 horas por dia, todos os dias da semana, inclusive feriados.` },
+  { q: `Quanto tempo a equipe leva para chegar em ${city.name}?`, a: `Nossas equipes de plantão circulam pela região para chegar em cerca de ${site.arrival} após o chamado.` },
+  { q: `Fazem limpeza de fossa em ${city.name}?`, a: `Sim. Fazemos limpeza de fossa séptica, sumidouro e caixa de gordura em ${city.name} com caminhão de sucção a vácuo.` },
+  { q: `Atendem condomínios e empresas em ${city.name}?`, a: `Sim. Atendemos residências, condomínios, comércios, restaurantes e indústrias em ${city.name}, com chamados emergenciais e manutenção preventiva.` },
+  { q: `Quanto custa uma desentupidora em ${city.name}?`, a: 'O valor depende do tipo de serviço, do local do entupimento e do acesso. Chame no WhatsApp com uma descrição ou foto do problema para receber orientação e orçamento.' },
+];
+---
+<Layout
+  title={`Desentupidora em ${city.name} 24h | Limpa Fossa | Desentupidora Braga`}
+  description={`Desentupidora e limpa fossa em ${city.name} 24 horas. Chegamos em ${site.arrival}. Esgoto, vaso, ralo, cano, coluna, caixa de gordura e hidrojateamento. Ligue ${site.phoneDisplay}.`}
+  crumbs={crumbs}
+  schema={[faqSchema(faq)]}
+>
+  <Hero
+    crumbs={crumbs}
+    eyebrow={`Equipe de plantão em ${city.name}`}
+    title={`Desentupidora em <em>${city.name}</em> 24 horas`}
+    subtitle={`Desentupimento e limpa fossa em ${city.name} com chegada em ${site.arrival}. Atendimento emergencial de dia, de noite e nos fins de semana.`}
+    fotoKeys={[`cidades/${city.slug}`]}
+    whatsMessage={msg}
+  />
+  <Highlights />
+
+  <section class="section">
+    <div class="container two-col">
+      <div class="prose">
+        <h2>Desentupidora e limpa fossa em {city.name}</h2>
+        <p>{city.intro}</p>
+        <p>{city.context}</p>
+        <p>
+          Atendemos desentupimento de ralos, vasos sanitários, canos, esgoto, redes e colunas de prédios, além de limpeza de fossa, limpeza de caixa de gordura e hidrojateamento. Cada chamado começa com um diagnóstico para usar a técnica certa e resolver de vez, sem quebra-quebra.
+        </p>
+        <h3>Por que chamar a Desentupidora Braga em {city.name}</h3>
+        <ul class="checklist">
+          <li><Icon name="check" size={18} /> Atendimento 24 horas, inclusive fins de semana e feriados</li>
+          <li><Icon name="check" size={18} /> Equipe de plantão que chega em {site.arrival}</li>
+          <li><Icon name="check" size={18} /> Atendimento emergencial para esgoto e fossa transbordando</li>
+          <li><Icon name="check" size={18} /> Máquinas rotativas, hidrojateamento e caminhão limpa fossa</li>
+          <li><Icon name="check" size={18} /> Residências, condomínios, comércios e indústrias</li>
+        </ul>
+        {!isPoa && city.regions.length > 0 && (
+          <>
+            <h3>Bairros atendidos em {city.name}</h3>
+            <ul class="tag-list">{city.regions.map((r) => <li><span>{r}</span></li>)}</ul>
+            <p class="small">E todos os demais bairros e localidades de {city.name}.</p>
+          </>
+        )}
+      </div>
+      <ContactBox title={`Desentupidora em ${city.name} agora`} whatsMessage={msg} />
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Serviços em {city.name}</span>
+        <h2>O que fazemos em {city.name}</h2>
+      </div>
+      <ServiceCards items={services} city={city} />
+    </div>
+  </section>
+
+  {isPoa && (
+    <section class="section" id="bairros">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Bairros</span>
+          <h2>Desentupidora nos bairros de Porto Alegre</h2>
+          <p>Atendemos todos os bairros da capital. Veja algumas das regiões onde estamos todos os dias:</p>
+        </div>
+        <div class="zonas">
+          {(Object.keys(zonas) as Zona[]).map((z) => (
+            <div class="zona">
+              <h3>{zonas[z].name}</h3>
+              <ul>
+                {bairrosDaZona(z).map((b) => (
+                  <li><a href={`/desentupidora-em-porto-alegre/${b.slug}/`}>{b.name}</a></li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class:list={['section', { 'section--soft': isPoa }]}>
+    <div class="container faq-narrow">
+      <FAQ items={faq} title={`Perguntas frequentes sobre desentupidora em ${city.name}`} />
+    </div>
+  </section>
+
+  <section class:list={['section', { 'section--soft': !isPoa }]}>
+    <div class="container">
+      <div class="section-head">
+        <h2>Cidades próximas a {city.name}</h2>
+      </div>
+      <ul class="tag-list near">
+        {nearby.map((c) => <li><a href={`/desentupidora-em-${c.slug}/`}>Desentupidora em {c.name}</a></li>)}
+      </ul>
+      <h3 class="all-title">Todas as cidades atendidas</h3>
+      <CityLinks exclude={city.slug} />
+    </div>
+  </section>
+
+  <CtaBand title={`Entupiu em ${city.name}? Chame agora.`} whatsMessage={msg} />
+</Layout>
+
+<style>
+  .small {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-top: 10px;
+  }
+  .zonas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+  }
+  .zona {
+    background: var(--bg-soft);
+    border-radius: var(--radius);
+    padding: 22px;
+  }
+  .zona h3 {
+    color: var(--accent);
+  }
+  .zona ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 6px;
+  }
+  .zona a {
+    color: var(--navy);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .zona a:hover {
+    color: var(--blue);
+    text-decoration: underline;
+  }
+  .faq-narrow {
+    max-width: 820px;
+  }
+  .near {
+    justify-content: center;
+  }
+  .all-title {
+    text-align: center;
+    margin: 40px 0 18px;
+  }
+</style>

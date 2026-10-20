@@ -1,0 +1,79 @@
+---
+import Icon from './Icon.astro';
+import Foto from './Foto.astro';
+import { whatsappLink } from '../data/site';
+import type { Service } from '../data/services';
+import type { City } from '../data/cities';
+
+interface Props {
+  items: Service[];
+  city?: City; // se informado, os links vão para a página serviço + cidade
+}
+const { items, city } = Astro.props;
+const href = (s: Service) => (city ? `/${s.slug}-em-${city.slug}/` : `/servicos/${s.slug}/`);
+---
+<div class="grid grid--3">
+  {items.map((s) => (
+    <article class="card svc">
+      <a href={href(s)} class="svc__media" tabindex="-1" aria-hidden="true">
+        <Foto keys={[`servicos/${s.slug}`]} alt={s.name} icon={s.icon} />
+        <span class="svc__icon"><Icon name={s.icon} size={22} /></span>
+      </a>
+      <div class="svc__body">
+        <h3><a href={href(s)}>{s.name}{city && ` em ${city.name}`}</a></h3>
+        <p>{s.short}</p>
+        <div class="svc__actions">
+          <a class="btn btn--ghost btn--sm" href={href(s)}>Saiba mais <Icon name="arrow" size={16} /></a>
+          <a class="btn btn--wa btn--sm" href={whatsappLink(`Olá! Preciso de ${s.name.toLowerCase()}${city ? ` em ${city.name}` : ''}.`)} target="_blank" rel="noopener"><Icon name="whatsapp" size={16} /> Orçamento</a>
+        </div>
+      </div>
+    </article>
+  ))}
+</div>
+
+<style>
+  .svc {
+    display: flex;
+    flex-direction: column;
+  }
+  .svc__media {
+    position: relative;
+    display: block;
+  }
+  .svc__icon {
+    position: absolute;
+    left: 18px;
+    bottom: -22px;
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 6px 14px -4px rgba(255, 107, 0, 0.6);
+  }
+  .svc__body {
+    padding: 34px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  .svc h3 a {
+    color: var(--navy);
+    text-decoration: none;
+  }
+  .svc h3 a:hover {
+    color: var(--blue);
+  }
+  .svc p {
+    color: var(--muted);
+    font-size: 0.95rem;
+    flex: 1;
+  }
+  .svc__actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+</style>

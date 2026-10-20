@@ -1,0 +1,123 @@
+---
+// Páginas de bairro de Porto Alegre, ex.: /desentupidora-em-porto-alegre/menino-deus/
+import Layout from '../../layouts/Layout.astro';
+import Hero from '../../components/Hero.astro';
+import Highlights from '../../components/Highlights.astro';
+import ServiceCards from '../../components/ServiceCards.astro';
+import FAQ from '../../components/FAQ.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import ContactBox from '../../components/ContactBox.astro';
+import Icon from '../../components/Icon.astro';
+import { getCity } from '../../data/cities';
+import { services } from '../../data/services';
+import { bairros, zonas, bairrosDaZona, type Bairro } from '../../data/bairros';
+import { site } from '../../data/site';
+import { faqSchema } from '../../lib/schema';
+
+export function getStaticPaths() {
+  return bairros.map((bairro) => ({ params: { cidade: 'porto-alegre', bairro: bairro.slug }, props: { bairro } }));
+}
+
+const { bairro } = Astro.props as { bairro: Bairro };
+const city = getCity('porto-alegre');
+const zona = zonas[bairro.zona];
+const vizinhos = bairrosDaZona(bairro.zona).filter((b) => b.slug !== bairro.slug);
+const path = `/desentupidora-em-porto-alegre/${bairro.slug}/`;
+const crumbs = [
+  { name: 'Porto Alegre', href: '/desentupidora-em-porto-alegre/' },
+  { name: bairro.name, href: path },
+];
+const msg = `Olá! Preciso de uma desentupidora no bairro ${bairro.name}, Porto Alegre.`;
+
+const faq = [
+  { q: `Vocês atendem o bairro ${bairro.name} a qualquer hora?`, a: `Sim. Atendemos o bairro ${bairro.name} e toda a ${zona.name} de Porto Alegre 24 horas por dia, inclusive fins de semana e feriados.` },
+  { q: `Quanto tempo leva para a equipe chegar ${bairro.em}?`, a: `Temos equipes de plantão em diferentes regiões da cidade para chegar em cerca de ${site.arrival}.` },
+  { q: `Fazem limpeza de fossa e caixa de gordura ${bairro.em}?`, a: 'Sim. Fazemos limpeza de fossa, sumidouro e caixa de gordura com caminhão de sucção a vácuo e descarte correto dos resíduos.' },
+  { q: `Atendem prédios e condomínios ${bairro.em}?`, a: 'Sim. Fazemos desentupimento de colunas, redes de esgoto e pluviais e manutenção preventiva para condomínios.' },
+];
+---
+<Layout
+  title={`Desentupidora ${bairro.em}, Porto Alegre 24h | Desentupidora Braga`}
+  description={`Desentupidora ${bairro.em}, Porto Alegre, 24 horas. Chegamos em ${site.arrival}. Desentupimento de esgoto, vaso, ralo, cano, coluna e limpa fossa. Ligue ${site.phoneDisplay}.`}
+  crumbs={crumbs}
+  schema={[faqSchema(faq)]}
+>
+  <Hero
+    crumbs={crumbs}
+    eyebrow={`${zona.name} de Porto Alegre`}
+    title={`Desentupidora ${bairro.em.split(' ')[0]} <em>${bairro.name}</em>, Porto Alegre`}
+    subtitle={`Desentupimento e limpa fossa ${bairro.em} com atendimento 24 horas e chegada em ${site.arrival}.`}
+    fotoKeys={[`cidades/porto-alegre`]}
+    whatsMessage={msg}
+  />
+  <Highlights />
+
+  <section class="section">
+    <div class="container two-col">
+      <div class="prose">
+        <h2>Desentupimento {bairro.em}</h2>
+        <p>
+          Precisa de uma desentupidora {bairro.em}? A Desentupidora Braga atende o bairro e toda a {zona.name} de Porto Alegre com equipes de plantão 24 horas, prontas para resolver entupimentos de esgoto, vasos, ralos, canos e colunas, além de limpeza de fossa e caixa de gordura.
+        </p>
+        <p>{zona.text}</p>
+        <p>{city.context}</p>
+        <h3>Serviços disponíveis {bairro.em}</h3>
+        <ul class="checklist cols">
+          {services.map((s) => (
+            <li><Icon name="check" size={18} /> <a href={`/${s.slug}-em-porto-alegre/`}>{s.name}</a></li>
+          ))}
+        </ul>
+      </div>
+      <ContactBox title={`Desentupidora ${bairro.em} agora`} whatsMessage={msg} />
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container">
+      <div class="section-head">
+        <h2>Nossos serviços em Porto Alegre</h2>
+      </div>
+      <ServiceCards items={services} city={city} />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container faq-narrow">
+      <FAQ items={faq} title={`Perguntas frequentes – ${bairro.name}`} />
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container">
+      <div class="section-head">
+        <h2>Outros bairros da {zona.name}</h2>
+      </div>
+      <ul class="tag-list center">
+        {vizinhos.map((b) => <li><a href={`/desentupidora-em-porto-alegre/${b.slug}/`}>{b.name}</a></li>)}
+        <li><a href="/desentupidora-em-porto-alegre/#bairros">Todos os bairros →</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand title={`Entupiu ${bairro.em}? Chame agora.`} whatsMessage={msg} />
+</Layout>
+
+<style>
+  .cols {
+    grid-template-columns: 1fr 1fr;
+  }
+  .cols a {
+    color: var(--navy);
+  }
+  .faq-narrow {
+    max-width: 820px;
+  }
+  .center {
+    justify-content: center;
+  }
+  @media (max-width: 560px) {
+    .cols {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

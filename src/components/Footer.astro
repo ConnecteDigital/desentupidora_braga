@@ -1,0 +1,122 @@
+---
+import Icon from './Icon.astro';
+import Logo from './Logo.astro';
+import { site, whatsappLink } from '../data/site';
+import { services } from '../data/services';
+import { cities } from '../data/cities';
+const year = new Date().getFullYear();
+---
+<footer class="footer">
+  <div class="container footer__grid">
+    <div>
+      <Logo light />
+      <p class="footer__about">
+        Desentupidora e limpa fossa 24 horas em {site.region}. Atendimento emergencial, equipes de plantão e chegada em {site.arrival}.
+      </p>
+      <div class="footer__contact">
+        <a href={site.phoneHref}><Icon name="phone" size={18} /> {site.phoneDisplay}</a>
+        <a href={whatsappLink()} target="_blank" rel="noopener"><Icon name="whatsapp" size={18} /> WhatsApp</a>
+        {site.email && <a href={`mailto:${site.email}`}><Icon name="mail" size={18} /> {site.email}</a>}
+        <span><Icon name="clock" size={18} /> 24 horas, todos os dias</span>
+      </div>
+    </div>
+    <div>
+      <p class="footer__title">Serviços</p>
+      <ul>
+        {services.map((s) => <li><a href={`/servicos/${s.slug}/`}>{s.name}</a></li>)}
+      </ul>
+    </div>
+    <div>
+      <p class="footer__title">Cidades atendidas</p>
+      <ul class="footer__cities">
+        {cities.map((c) => <li><a href={`/desentupidora-em-${c.slug}/`}>{c.name}</a></li>)}
+      </ul>
+    </div>
+    <div>
+      <p class="footer__title">Institucional</p>
+      <ul>
+        <li><a href="/sobre/">Sobre a empresa</a></li>
+        <li><a href="/area-de-atendimento/">Área de atendimento</a></li>
+        <li><a href="/desentupidora-em-porto-alegre/#bairros">Bairros de Porto Alegre</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/contato/">Contato</a></li>
+        <li><a href="/politica-de-privacidade/">Política de privacidade</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <div class="container">
+      © {year} {site.name}{site.cnpj && ` · CNPJ ${site.cnpj}`} · Todos os direitos reservados.
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: #071a31;
+    color: #9fb4cc;
+    font-size: 0.95rem;
+  }
+  .footer__grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 40px;
+    padding-top: 64px;
+    padding-bottom: 48px;
+  }
+  .footer__about {
+    margin-top: 18px;
+  }
+  .footer__contact {
+    display: grid;
+    gap: 10px;
+  }
+  .footer__contact a,
+  .footer__contact span {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .footer__contact :global(svg) {
+    color: var(--accent);
+  }
+  .footer__title {
+    font-family: var(--font-head);
+    color: #fff;
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+  .footer ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 8px;
+  }
+  .footer ul a {
+    color: #9fb4cc;
+    text-decoration: none;
+  }
+  .footer ul a:hover {
+    color: #fff;
+  }
+  .footer__bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 18px 0;
+    font-size: 0.85rem;
+    text-align: center;
+  }
+  @media (max-width: 960px) {
+    .footer__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 560px) {
+    .footer__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

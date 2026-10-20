@@ -1,0 +1,128 @@
+---
+// Conteúdo de uma página de serviço, geral ou em uma cidade específica.
+import Icon from './Icon.astro';
+import Foto from './Foto.astro';
+import Steps from './Steps.astro';
+import FAQ from './FAQ.astro';
+import ContactBox from './ContactBox.astro';
+import ServiceCards from './ServiceCards.astro';
+import CityLinks from './CityLinks.astro';
+import { site } from '../data/site';
+import { services, type Service } from '../data/services';
+import type { City } from '../data/cities';
+
+interface Props {
+  service: Service;
+  city?: City;
+  faq: { q: string; a: string }[];
+}
+const { service: s, city, faq } = Astro.props;
+const where = city ? ` em ${city.name}` : '';
+const others = services.filter((x) => x.slug !== s.slug);
+const msg = `Olá! Preciso de ${s.name.toLowerCase()}${where}.`;
+---
+<section class="section">
+  <div class="container two-col">
+    <article class="prose">
+      <h2>{s.name}{where}{city ? '' : ' em Porto Alegre e região'}</h2>
+      {city && <p>{city.intro}</p>}
+      {s.intro.map((p) => <p>{p}</p>)}
+      {city && <p>{city.context}</p>}
+
+      <div class="detail-media">
+        <Foto keys={[city && `cidades/${city.slug}`, `servicos/${s.slug}`]} alt={`${s.name}${where}`} icon={s.icon} widths={[600, 1000]} sizes="(max-width: 960px) 100vw, 760px" />
+      </div>
+
+      <h2>Sinais de que você precisa de {s.name.toLowerCase()}</h2>
+      <ul class="checklist">
+        {s.signs.map((t) => <li><Icon name="check" size={18} /> {t}</li>)}
+      </ul>
+
+      <h2>Principais causas</h2>
+      <ul>
+        {s.causes.map((t) => <li>{t}</li>)}
+      </ul>
+
+      <div class="alert">
+        <Icon name="alert" size={22} />
+        <p>
+          <strong>Emergência{where}?</strong> Não espere o problema piorar. Nossa equipe de plantão chega em {site.arrival}, 24 horas por dia.
+        </p>
+      </div>
+
+      {city && city.regions.length > 0 && (
+        <>
+          <h2>Bairros atendidos em {city.name}</h2>
+          <p>Atendemos todos os bairros de {city.name}, incluindo:</p>
+          <ul class="tag-list">{city.regions.map((r) => <li><span>{r}</span></li>)}</ul>
+        </>
+      )}
+    </article>
+    <ContactBox title={`${s.name}${where} agora`} whatsMessage={msg} />
+  </div>
+</section>
+
+<section class="section section--soft">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Como trabalhamos</span>
+      <h2>Como é feito o serviço{where}</h2>
+    </div>
+    <Steps items={s.process} />
+  </div>
+</section>
+
+<section class="section">
+  <div class="container faq-narrow">
+    <FAQ items={faq} title={`Dúvidas sobre ${s.name.toLowerCase()}${where}`} />
+  </div>
+</section>
+
+<section class="section section--soft">
+  <div class="container">
+    <div class="section-head">
+      <h2>{city ? `Outros serviços em ${city.name}` : 'Outros serviços'}</h2>
+    </div>
+    <ServiceCards items={others} city={city} />
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2>{s.name} em outras cidades</h2>
+      <p>Atendemos Porto Alegre e toda a região metropolitana.</p>
+    </div>
+    <CityLinks exclude={city?.slug} href={(c) => `/${s.slug}-em-${c.slug}/`} label={(c) => c.name} />
+  </div>
+</section>
+
+<style>
+  .detail-media {
+    margin: 28px 0;
+  }
+  .detail-media :global(.foto) {
+    border-radius: var(--radius);
+    aspect-ratio: 16 / 9;
+  }
+  .alert {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    background: #fff4ec;
+    border-left: 4px solid var(--accent);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin: 28px 0;
+  }
+  .alert :global(svg) {
+    color: var(--accent);
+    flex: none;
+  }
+  .alert p {
+    margin: 0;
+  }
+  .faq-narrow {
+    max-width: 820px;
+  }
+</style>

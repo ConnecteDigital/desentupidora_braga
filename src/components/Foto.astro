@@ -1,0 +1,32 @@
+---
+import { Image } from 'astro:assets';
+import { getFoto } from '../lib/fotos';
+import Icon from './Icon.astro';
+
+interface Props {
+  keys: (string | undefined)[];
+  alt: string;
+  icon?: string;
+  widths?: number[];
+  sizes?: string;
+  class?: string;
+  eager?: boolean;
+}
+const { keys, alt, icon = 'drain', widths = [400, 800], sizes = '(max-width: 720px) 100vw, 400px', class: cls, eager = false } = Astro.props;
+const foto = getFoto(...keys);
+---
+{foto ? (
+  <Image
+    src={foto}
+    alt={alt}
+    widths={widths}
+    sizes={sizes}
+    class:list={['foto', cls]}
+    loading={eager ? 'eager' : 'lazy'}
+    fetchpriority={eager ? 'high' : 'auto'}
+  />
+) : (
+  <div class:list={['foto foto--placeholder', cls]} role="img" aria-label={alt}>
+    <Icon name={icon} size={56} />
+  </div>
+)}

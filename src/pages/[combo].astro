@@ -1,0 +1,47 @@
+---
+// Páginas serviço + cidade, ex.: /limpeza-de-fossa-em-canoas/
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import ServiceDetail from '../components/ServiceDetail.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { services, type Service } from '../data/services';
+import { cities, type City } from '../data/cities';
+import { site } from '../data/site';
+import { faqSchema, serviceSchema } from '../lib/schema';
+
+export function getStaticPaths() {
+  return services.flatMap((service) =>
+    cities.map((city) => ({ params: { combo: `${service.slug}-em-${city.slug}` }, props: { service, city } })),
+  );
+}
+
+const { service: s, city } = Astro.props as { service: Service; city: City };
+const path = `/${s.slug}-em-${city.slug}/`;
+const crumbs = [
+  { name: city.name, href: `/desentupidora-em-${city.slug}/` },
+  { name: s.name, href: path },
+];
+const faq = [
+  { q: `Vocês fazem ${s.name.toLowerCase()} em ${city.name}?`, a: `Sim. A Desentupidora Braga atende ${city.name} 24 horas por dia, com equipe de plantão e chegada em cerca de ${site.arrival}.` },
+  ...s.faq,
+  { q: `Como pedir orçamento em ${city.name}?`, a: `Chame no WhatsApp ou ligue para ${site.phoneDisplay}, informe o endereço em ${city.name} e descreva o problema. A equipe orienta e passa o orçamento.` },
+];
+const msg = `Olá! Preciso de ${s.name.toLowerCase()} em ${city.name}.`;
+---
+<Layout
+  title={`${s.name} em ${city.name} 24h | Desentupidora Braga`}
+  description={`${s.name} em ${city.name} 24 horas. ${s.short} Chegamos em ${site.arrival}. Ligue ${site.phoneDisplay}.`}
+  crumbs={crumbs}
+  schema={[serviceSchema(`${s.name} em ${city.name}`, s.short, [city.name], path), faqSchema(faq)]}
+>
+  <Hero
+    crumbs={crumbs}
+    eyebrow={`Equipe de plantão em ${city.name}`}
+    title={`${s.name} em <em>${city.name}</em>`}
+    subtitle={`${s.short} Atendimento 24 horas em ${city.name} com chegada em ${site.arrival}.`}
+    fotoKeys={[`servicos/${s.slug}`, `cidades/${city.slug}`]}
+    whatsMessage={msg}
+  />
+  <ServiceDetail service={s} city={city} faq={faq} />
+  <CtaBand title={`${s.name} em ${city.name}, agora.`} whatsMessage={msg} />
+</Layout>

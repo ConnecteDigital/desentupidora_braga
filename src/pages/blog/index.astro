@@ -1,0 +1,57 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Hero from '../../components/Hero.astro';
+import Foto from '../../components/Foto.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const crumbs = [{ name: 'Blog', href: '/blog/' }];
+const fmt = (d: Date) => d.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric', timeZone: 'UTC' });
+---
+<Layout
+  title="Blog | Dicas de Desentupimento e Limpa Fossa | Desentupidora Braga"
+  description="Dicas para evitar entupimentos, cuidar da fossa e da caixa de gordura e saber quando chamar uma desentupidora em Porto Alegre."
+  crumbs={crumbs}
+>
+  <Hero crumbs={crumbs} title="Blog da <em>Desentupidora Braga</em>" subtitle="Dicas práticas para evitar entupimentos e cuidar do esgoto, da fossa e da caixa de gordura." />
+  <section class="section">
+    <div class="container grid grid--3">
+      {posts.map((p) => (
+        <article class="card post">
+          <a href={`/blog/${p.id}/`} tabindex="-1" aria-hidden="true"><Foto keys={[`blog/${p.id}`]} alt={p.data.title} icon={p.data.icon} /></a>
+          <div class="post__body">
+            <time datetime={p.data.date.toISOString()}>{fmt(p.data.date)}</time>
+            <h2><a href={`/blog/${p.id}/`}>{p.data.title}</a></h2>
+            <p>{p.data.description}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+  <CtaBand />
+</Layout>
+
+<style>
+  .post__body {
+    padding: 20px;
+  }
+  .post time {
+    font-size: 0.82rem;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .post h2 {
+    font-size: 1.15rem;
+    margin: 6px 0 8px;
+  }
+  .post h2 a {
+    color: var(--navy);
+    text-decoration: none;
+  }
+  .post p {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin: 0;
+  }
+</style>

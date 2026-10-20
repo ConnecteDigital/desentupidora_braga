@@ -1,0 +1,64 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Highlights from '../components/Highlights.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Foto from '../components/Foto.astro';
+import Icon from '../components/Icon.astro';
+import { site } from '../data/site';
+
+const crumbs = [{ name: 'Sobre', href: '/sobre/' }];
+---
+<Layout
+  title="Sobre a Desentupidora Braga | Porto Alegre"
+  description={`Conheça a Desentupidora Braga: desentupimento e limpa fossa 24 horas em Porto Alegre e região, com chegada em ${site.arrival} e equipamento profissional.`}
+  crumbs={crumbs}
+>
+  <Hero crumbs={crumbs} title="Sobre a <em>Desentupidora Braga</em>" subtitle="Desentupimento e limpa fossa 24 horas em Porto Alegre e cidades vizinhas." />
+  <Highlights />
+
+  <section class="section">
+    <div class="container about">
+      <div class="prose">
+        <h2>Quem somos</h2>
+        <p>
+          A Desentupidora Braga é uma empresa de Porto Alegre especializada em desentupimento, limpeza de fossa, limpeza de caixa de gordura e hidrojateamento. Atendemos residências, condomínios, comércios e indústrias na capital e nas cidades vizinhas.
+        </p>
+        <p>
+          Nosso compromisso é simples: atender rápido, explicar o problema com clareza e resolver de verdade. Por isso mantemos equipes de plantão 24 horas, distribuídas pela região, que chegam em cerca de {site.arrival} após o chamado.
+        </p>
+        <h2>Como trabalhamos</h2>
+        <ul class="checklist">
+          <li><Icon name="check" size={18} /> Diagnóstico antes de começar, para usar a técnica certa</li>
+          <li><Icon name="check" size={18} /> Máquinas rotativas, hidrojateamento e caminhão limpa fossa</li>
+          <li><Icon name="check" size={18} /> Serviço sem quebra-quebra sempre que possível</li>
+          <li><Icon name="check" size={18} /> Local limpo e escoamento testado antes de sair</li>
+          <li><Icon name="check" size={18} /> Resíduos de fossa e caixa de gordura com destinação adequada</li>
+        </ul>
+      </div>
+      <Foto keys={['geral/equipe', 'geral/caminhao']} alt="Equipe da Desentupidora Braga" icon="truck" widths={[600, 1000]} sizes="(max-width: 960px) 100vw, 480px" class="about__img" />
+    </div>
+  </section>
+  <CtaBand />
+</Layout>
+
+<style>
+  .about {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+  .about :global(.about__img) {
+    border-radius: 20px;
+    aspect-ratio: 4 / 5;
+  }
+  @media (max-width: 960px) {
+    .about {
+      grid-template-columns: 1fr;
+    }
+    .about :global(.about__img) {
+      aspect-ratio: 16 / 10;
+    }
+  }
+</style>

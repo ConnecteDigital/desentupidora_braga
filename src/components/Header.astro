@@ -1,0 +1,322 @@
+---
+import Icon from './Icon.astro';
+import Logo from './Logo.astro';
+import { site, whatsappLink } from '../data/site';
+import { services, groups } from '../data/services';
+import { cities } from '../data/cities';
+
+const path = Astro.url.pathname;
+const isActive = (prefix: string) => (prefix === '/' ? path === '/' : path.startsWith(prefix));
+---
+<div class="topbar">
+  <div class="container topbar__inner">
+    <span><Icon name="clock" size={16} /> Atendimento 24 horas</span>
+    <span><Icon name="bolt" size={16} /> Chegamos em {site.arrival}</span>
+    <span class="topbar__hide"><Icon name="siren" size={16} /> Atendimento emergencial</span>
+    <span class="topbar__hide"><Icon name="pin" size={16} /> {site.region}</span>
+  </div>
+</div>
+<header class="header">
+  <div class="container header__inner">
+    <a href="/" class="header__logo" aria-label={`${site.name} - página inicial`}>
+      <Logo />
+    </a>
+
+    <nav class="nav" id="menu" aria-label="Menu principal">
+      <ul class="nav__list">
+        <li><a href="/" class:list={{ active: isActive('/') }}>Início</a></li>
+        <li class="nav__drop">
+          <a href="/servicos/" class:list={{ active: isActive('/servicos') }}>Serviços <Icon name="chevron" size={16} /></a>
+          <div class="drop drop--services">
+            {(Object.keys(groups) as (keyof typeof groups)[]).map((g) => (
+              <div>
+                <p class="drop__title">{groups[g].title}</p>
+                <ul>
+                  {services.filter((s) => s.group === g).map((s) => (
+                    <li><a href={`/servicos/${s.slug}/`}><Icon name={s.icon} size={18} /> {s.name}</a></li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </li>
+        <li class="nav__drop">
+          <a href="/area-de-atendimento/" class:list={{ active: isActive('/area-de-atendimento') || isActive('/desentupidora-em') }}>Área de Atendimento <Icon name="chevron" size={16} /></a>
+          <div class="drop drop--cities">
+            <ul>
+              {cities.map((c) => (
+                <li><a href={`/desentupidora-em-${c.slug}/`}><Icon name="pin" size={16} /> {c.name}</a></li>
+              ))}
+            </ul>
+          </div>
+        </li>
+        <li><a href="/sobre/" class:list={{ active: isActive('/sobre') }}>Sobre</a></li>
+        <li><a href="/blog/" class:list={{ active: isActive('/blog') }}>Blog</a></li>
+        <li><a href="/contato/" class:list={{ active: isActive('/contato') }}>Contato</a></li>
+      </ul>
+      <a class="btn btn--wa nav__mobile-cta" href={whatsappLink()} target="_blank" rel="noopener">
+        <Icon name="whatsapp" size={20} /> Chamar no WhatsApp
+      </a>
+    </nav>
+
+    <div class="header__cta">
+      <a class="btn btn--call btn--sm" href={site.phoneHref}><Icon name="phone" size={18} /> <span>{site.phoneDisplay}</span></a>
+      <button class="header__toggle" aria-controls="menu" aria-expanded="false" aria-label="Abrir menu">
+        <Icon name="menu" size={26} class="i-open" />
+        <Icon name="close" size={26} class="i-close" />
+      </button>
+    </div>
+  </div>
+</header>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('.header__toggle');
+  const header = document.querySelector('.header');
+  btn?.addEventListener('click', () => {
+    const open = header?.classList.toggle('is-open');
+    btn.setAttribute('aria-expanded', String(!!open));
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+</script>
+
+<style>
+  .topbar {
+    background: var(--navy);
+    color: #cfe0f5;
+    font-size: 0.85rem;
+  }
+  .topbar__inner {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    flex-wrap: wrap;
+  }
+  .topbar span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .topbar :global(svg) {
+    color: var(--accent);
+  }
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(255, 255, 255, 0.97);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    height: 76px;
+  }
+  .header__logo {
+    display: flex;
+    text-decoration: none;
+    flex: none;
+  }
+  .nav__list {
+    display: flex;
+    gap: 4px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .nav__list > li > a {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--navy);
+    text-decoration: none;
+  }
+  .nav__list > li > a:hover,
+  .nav__list > li > a.active {
+    background: var(--blue-soft);
+    color: var(--blue);
+  }
+  .nav__drop {
+    position: relative;
+  }
+  .drop {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(8px);
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.18s ease;
+  }
+  .nav__drop:hover .drop,
+  .nav__drop:focus-within .drop {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+  }
+  .drop--services {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    width: 560px;
+  }
+  .drop--cities ul {
+    columns: 2;
+    width: 380px;
+  }
+  .drop ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .drop a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 8px;
+    border-radius: 8px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 0.93rem;
+    break-inside: avoid;
+  }
+  .drop a:hover {
+    background: var(--blue-soft);
+    color: var(--blue);
+  }
+  .drop :global(svg) {
+    color: var(--blue);
+    flex: none;
+  }
+  .drop__title {
+    font-family: var(--font-head);
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 0 0 6px 8px;
+  }
+  .header__cta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .header__toggle {
+    display: none;
+    background: none;
+    border: 0;
+    color: var(--navy);
+    padding: 6px;
+    cursor: pointer;
+  }
+  .header__toggle :global(.i-close) {
+    display: none;
+  }
+  .nav__mobile-cta {
+    display: none;
+  }
+
+  @media (max-width: 1080px) {
+    .header__toggle {
+      display: block;
+    }
+    .nav {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      height: calc(100dvh - 76px);
+      background: #fff;
+      padding: 16px 20px 100px;
+      overflow-y: auto;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-8px);
+      transition: all 0.2s ease;
+    }
+    .header.is-open .nav {
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+    }
+    .header.is-open :global(.i-open) {
+      display: none;
+    }
+    .header.is-open :global(.i-close) {
+      display: block;
+    }
+    .nav__list {
+      flex-direction: column;
+    }
+    .nav__list > li > a {
+      font-size: 1.05rem;
+      padding: 12px 8px;
+      width: 100%;
+    }
+    .drop {
+      position: static;
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+      box-shadow: none;
+      border: 0;
+      padding: 0 0 8px 12px;
+      width: auto !important;
+    }
+    .nav__drop:hover .drop,
+    .nav__drop:focus-within .drop {
+      transform: none;
+    }
+    .drop--services {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+    .drop--cities ul {
+      width: auto;
+    }
+    .nav__mobile-cta {
+      display: flex;
+      margin-top: 20px;
+      width: 100%;
+    }
+  }
+  @media (max-width: 720px) {
+    .topbar__hide {
+      display: none !important;
+    }
+    .topbar__inner {
+      gap: 14px;
+      font-size: 0.78rem;
+      flex-wrap: nowrap;
+      padding-top: 6px;
+      padding-bottom: 6px;
+    }
+    .header__inner {
+      height: 64px;
+    }
+    .nav {
+      height: calc(100dvh - 64px);
+    }
+    .header__cta .btn span {
+      display: none;
+    }
+    .header__cta .btn {
+      padding: 10px;
+    }
+  }
+</style>

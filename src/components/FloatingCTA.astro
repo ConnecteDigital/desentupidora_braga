@@ -1,0 +1,76 @@
+---
+import Icon from './Icon.astro';
+import { site, whatsappLink } from '../data/site';
+---
+<a class="float-wa" href={whatsappLink()} target="_blank" rel="noopener" aria-label="Chamar no WhatsApp">
+  <Icon name="whatsapp" size={32} />
+</a>
+
+<div class="mobile-bar">
+  <a class="mobile-bar__call" href={site.phoneHref}><Icon name="phone" size={20} /> Ligar agora</a>
+  <a class="mobile-bar__wa" href={whatsappLink()} target="_blank" rel="noopener"><Icon name="whatsapp" size={20} /> WhatsApp</a>
+</div>
+
+<style>
+  .float-wa {
+    position: fixed;
+    right: 22px;
+    bottom: 22px;
+    z-index: 60;
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--wa);
+    color: #fff;
+    box-shadow: 0 10px 25px -6px rgba(31, 174, 82, 0.8);
+    animation: pulse 2.4s infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(31, 174, 82, 0.55); }
+    70% { box-shadow: 0 0 0 16px rgba(31, 174, 82, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(31, 174, 82, 0); }
+  }
+  .mobile-bar {
+    display: none;
+  }
+  @media (max-width: 720px) {
+    .float-wa {
+      display: none;
+    }
+    .mobile-bar {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 60;
+      box-shadow: 0 -6px 20px rgba(10, 35, 66, 0.15);
+    }
+    .mobile-bar a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      height: 60px;
+      color: #fff;
+      font-family: var(--font-head);
+      font-weight: 700;
+      text-decoration: none;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    .mobile-bar__call {
+      background: var(--accent);
+    }
+    .mobile-bar__wa {
+      background: var(--wa);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .float-wa {
+      animation: none;
+    }
+  }
+</style>

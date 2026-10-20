@@ -1,0 +1,107 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Highlights from '../components/Highlights.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import { cities } from '../data/cities';
+import { bairros, zonas, bairrosDaZona, type Zona } from '../data/bairros';
+import { site } from '../data/site';
+
+const crumbs = [{ name: 'Área de atendimento', href: '/area-de-atendimento/' }];
+---
+<Layout
+  title="Área de Atendimento | Porto Alegre e Região | Desentupidora Braga"
+  description={`Desentupidora e limpa fossa 24h em Porto Alegre, Canoas, Gravataí, Cachoeirinha, Alvorada, Viamão, Esteio, São Leopoldo, Novo Hamburgo e região. Chegamos em ${site.arrival}.`}
+  crumbs={crumbs}
+>
+  <Hero
+    crumbs={crumbs}
+    title="Área de atendimento: <em>Porto Alegre</em> e cidades vizinhas"
+    subtitle={`Equipes de plantão 24 horas espalhadas pela capital e pela Região Metropolitana para chegar em ${site.arrival}.`}
+  />
+  <Highlights />
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Cidades</span>
+        <h2>Cidades que atendemos</h2>
+        <p>Clique na sua cidade para ver os serviços e bairros atendidos.</p>
+      </div>
+      <div class="grid grid--3">
+        {cities.map((c) => (
+          <a class="card city" href={`/desentupidora-em-${c.slug}/`}>
+            <span class="city__head"><Icon name="pin" size={22} /> <h3>Desentupidora em {c.name}</h3></span>
+            <p>{c.intro}</p>
+            {c.regions.length > 0 && <p class="city__regions">{c.regions.slice(0, 6).join(' · ')}</p>}
+            {c.main && <p class="city__regions">{bairros.length} bairros com página própria</p>}
+            <span class="city__more">Ver página <Icon name="arrow" size={16} /></span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Porto Alegre</span>
+        <h2>Bairros atendidos em Porto Alegre</h2>
+      </div>
+      <div class="zonas">
+        {(Object.keys(zonas) as Zona[]).map((z) => (
+          <div>
+            <h3>{zonas[z].name}</h3>
+            <ul class="tag-list">
+              {bairrosDaZona(z).map((b) => <li><a href={`/desentupidora-em-porto-alegre/${b.slug}/`}>{b.name}</a></li>)}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CtaBand title="Sua cidade não está na lista?" text="Fale com a gente. Atendemos toda a Região Metropolitana de Porto Alegre e podemos ir até você." />
+</Layout>
+
+<style>
+  .city {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    text-decoration: none;
+    color: var(--text);
+  }
+  .city__head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--accent);
+  }
+  .city__head h3 {
+    margin: 0;
+  }
+  .city p {
+    color: var(--muted);
+    font-size: 0.93rem;
+    margin: 12px 0 0;
+  }
+  .city .city__regions {
+    font-size: 0.85rem;
+    color: var(--blue);
+    flex: 1;
+  }
+  .city__more {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 16px;
+    font-weight: 600;
+    color: var(--navy);
+  }
+  .zonas {
+    display: grid;
+    gap: 28px;
+  }
+</style>

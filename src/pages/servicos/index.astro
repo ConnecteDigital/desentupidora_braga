@@ -1,0 +1,54 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Hero from '../../components/Hero.astro';
+import Highlights from '../../components/Highlights.astro';
+import ServiceCards from '../../components/ServiceCards.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { services, groups } from '../../data/services';
+import { site } from '../../data/site';
+
+const crumbs = [{ name: 'Serviços', href: '/servicos/' }];
+const itemList = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  itemListElement: services.map((s, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: s.name,
+    url: new URL(`/servicos/${s.slug}/`, site.url).href,
+  })),
+};
+---
+<Layout
+  title="Serviços de Desentupimento e Limpa Fossa | Desentupidora Braga"
+  description={`Desentupimento de ralo, vaso, cano, esgoto, rede e coluna, limpeza de fossa, caixa de gordura e hidrojateamento em Porto Alegre e região. 24 horas, chegamos em ${site.arrival}.`}
+  crumbs={crumbs}
+  schema={[itemList]}
+>
+  <Hero
+    crumbs={crumbs}
+    title="Serviços de <em>desentupimento</em> e limpa fossa"
+    subtitle="Tudo o que sua casa, condomínio ou empresa precisa para manter esgoto, canos e fossa funcionando, com atendimento 24 horas."
+  />
+  <Highlights />
+  <section class="section">
+    <div class="container">
+      {(Object.keys(groups) as (keyof typeof groups)[]).map((g) => (
+        <div class="group">
+          <div class="section-head">
+            <h2>{groups[g].title}</h2>
+            <p>{groups[g].text}</p>
+          </div>
+          <ServiceCards items={services.filter((s) => s.group === g)} />
+        </div>
+      ))}
+    </div>
+  </section>
+  <CtaBand />
+</Layout>
+
+<style>
+  .group + .group {
+    margin-top: 64px;
+  }
+</style>

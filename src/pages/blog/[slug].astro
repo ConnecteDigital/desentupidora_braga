@@ -1,0 +1,103 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Foto from '../../components/Foto.astro';
+import ContactBox from '../../components/ContactBox.astro';
+import ServiceCards from '../../components/ServiceCards.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import { getFoto } from '../../lib/fotos';
+import { getService } from '../../data/services';
+import { site } from '../../data/site';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props as { post: CollectionEntry<'blog'> };
+const { Content } = await render(post);
+const path = `/blog/${post.id}/`;
+const crumbs = [
+  { name: 'Blog', href: '/blog/' },
+  { name: post.data.title, href: path },
+];
+const related = post.data.services.map(getService).filter(Boolean);
+const cover = getFoto(`blog/${post.id}`);
+const fmt = (d: Date) => d.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric', timeZone: 'UTC' });
+
+const article = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: post.data.date.toISOString(),
+  dateModified: post.data.date.toISOString(),
+  mainEntityOfPage: new URL(path, site.url).href,
+  inLanguage: 'pt-BR',
+  author: { '@type': 'Organization', name: site.name, url: site.url },
+  publisher: { '@id': `${site.url}/#empresa` },
+};
+---
+<Layout
+  title={`${post.data.title} | Desentupidora Braga`}
+  description={post.data.description}
+  crumbs={crumbs}
+  schema={[article]}
+  ogType="article"
+  ogImage={cover?.src}
+>
+  <section class="post-head">
+    <div class="container">
+      <Breadcrumbs crumbs={crumbs} />
+      <h1>{post.data.title}</h1>
+      <p class="lead">{post.data.description}</p>
+      <time datetime={post.data.date.toISOString()}>Publicado em {fmt(post.data.date)}</time>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container two-col">
+      <article class="prose">
+        <Foto keys={[`blog/${post.id}`]} alt={post.data.title} icon={post.data.icon} widths={[600, 1000]} sizes="(max-width: 960px) 100vw, 760px" eager class="cover" />
+        <Content />
+      </article>
+      <ContactBox />
+    </div>
+  </section>
+  {related.length > 0 && (
+    <section class="section section--soft">
+      <div class="container">
+        <div class="section-head"><h2>Serviços relacionados</h2></div>
+        <ServiceCards items={related} />
+      </div>
+    </section>
+  )}
+  <CtaBand />
+</Layout>
+
+<style>
+  .post-head {
+    background: var(--bg-soft);
+    padding: 40px 0 36px;
+    border-bottom: 1px solid var(--line);
+  }
+  .post-head h1 {
+    max-width: 860px;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+  }
+  .lead {
+    font-size: 1.15rem;
+    color: var(--muted);
+    max-width: 760px;
+  }
+  .post-head time {
+    font-size: 0.9rem;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .prose :global(.cover) {
+    border-radius: var(--radius);
+    aspect-ratio: 16 / 9;
+    margin-bottom: 28px;
+  }
+</style>

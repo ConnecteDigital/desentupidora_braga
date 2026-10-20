@@ -1,0 +1,21 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { site } from '../data/site';
+const crumbs = [{ name: 'Política de privacidade', href: '/politica-de-privacidade/' }];
+---
+<Layout title="Política de Privacidade | Desentupidora Braga" description="Política de privacidade e uso de dados do site da Desentupidora Braga." crumbs={crumbs}>
+  <section class="section">
+    <div class="container prose">
+      <h1>Política de Privacidade</h1>
+      <p>Esta política explica como o site {site.domain} trata as informações dos visitantes, em conformidade com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018).</p>
+      <h2>Dados coletados</h2>
+      <p>O site não armazena dados pessoais em servidores próprios. Ao usar o formulário de contato, as informações são enviadas diretamente para o nosso WhatsApp e usadas apenas para responder à sua solicitação e realizar o atendimento.</p>
+      <h2>Cookies e estatísticas</h2>
+      <p>Podemos usar ferramentas como Google Analytics e Google Tag Manager para entender, de forma agregada, como o site é utilizado (páginas visitadas, cliques em botões de contato). Essas ferramentas podem usar cookies. Você pode bloqueá-los nas configurações do seu navegador.</p>
+      <h2>Compartilhamento</h2>
+      <p>Não vendemos nem compartilhamos seus dados com terceiros, exceto quando necessário para prestar o serviço solicitado ou por obrigação legal.</p>
+      <h2>Seus direitos</h2>
+      <p>Você pode solicitar a qualquer momento acesso, correção ou exclusão dos seus dados entrando em contato pelo telefone ou WhatsApp {site.phoneDisplay}.</p>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,49 @@
+---
+import Icon from './Icon.astro';
+import { cities, type City } from '../data/cities';
+interface Props {
+  exclude?: string;
+  // monta o link: por padrão a página da cidade
+  href?: (c: City) => string;
+  label?: (c: City) => string;
+}
+const { exclude, href = (c) => `/desentupidora-em-${c.slug}/`, label = (c) => c.name } = Astro.props;
+---
+<ul class="city-links">
+  {cities.filter((c) => c.slug !== exclude).map((c) => (
+    <li><a href={href(c)}><Icon name="pin" size={18} /> {label(c)}</a></li>
+  ))}
+</ul>
+
+<style>
+  .city-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 10px;
+  }
+  .city-links a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: #fff;
+    border: 1px solid var(--line);
+    color: var(--navy);
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.15s ease;
+  }
+  .city-links a:hover {
+    border-color: var(--blue);
+    color: var(--blue);
+    transform: translateY(-2px);
+  }
+  .city-links :global(svg) {
+    color: var(--accent);
+    flex: none;
+  }
+</style>

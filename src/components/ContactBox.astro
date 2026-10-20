@@ -1,0 +1,66 @@
+---
+import Icon from './Icon.astro';
+import { site, whatsappLink } from '../data/site';
+interface Props {
+  title?: string;
+  whatsMessage?: string;
+}
+const { title = 'Precisa de atendimento agora?', whatsMessage } = Astro.props;
+---
+<aside class="cbox">
+  <span class="cbox__live"><span class="dot"></span> Equipe de plantão agora</span>
+  <p class="cbox__title">{title}</p>
+  <ul class="checklist">
+    <li><Icon name="check" size={18} /> Atendimento 24 horas</li>
+    <li><Icon name="check" size={18} /> Chegamos em {site.arrival}</li>
+    <li><Icon name="check" size={18} /> Atendimento emergencial</li>
+  </ul>
+  <a class="btn btn--wa" href={whatsappLink(whatsMessage)} target="_blank" rel="noopener"><Icon name="whatsapp" size={20} /> Chamar no WhatsApp</a>
+  <a class="btn btn--call" href={site.phoneHref}><Icon name="phone" size={18} /> {site.phoneDisplay}</a>
+</aside>
+
+<style>
+  .cbox {
+    position: sticky;
+    top: 96px;
+    background: var(--navy);
+    color: #dbe6f3;
+    border-radius: var(--radius);
+    padding: 26px;
+    display: grid;
+    gap: 12px;
+    box-shadow: var(--shadow);
+  }
+  .cbox__live {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #8ff0b3;
+  }
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #3ee07a;
+    box-shadow: 0 0 0 4px rgba(62, 224, 122, 0.25);
+  }
+  .cbox__title {
+    font-family: var(--font-head);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+    line-height: 1.25;
+  }
+  .cbox .checklist {
+    margin: 4px 0 6px;
+  }
+  .cbox .checklist :global(svg) {
+    color: #3ee07a;
+  }
+  .cbox .btn {
+    width: 100%;
+  }
+</style>
