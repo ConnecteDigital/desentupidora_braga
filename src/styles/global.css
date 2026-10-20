@@ -1,10 +1,10 @@
 :root {
-  --navy: #0a2342;
-  --navy-2: #12355f;
-  --blue: #1565d8;
-  --blue-soft: #e8f1fd;
-  --accent: #ff6b00;
-  --accent-dark: #e55d00;
+  --navy: #06215f;
+  --navy-2: #0a2f8a;
+  --blue: #083bc3;
+  --blue-soft: #e8eefc;
+  --accent: #fd5f00;
+  --accent-dark: #e05200;
   --wa: #1fae52;
   --wa-dark: #178f43;
   --text: #1c2733;
@@ -13,7 +13,7 @@
   --bg: #ffffff;
   --bg-soft: #f4f7fb;
   --radius: 14px;
-  --shadow: 0 10px 30px -12px rgba(10, 35, 66, 0.25);
+  --shadow: 0 10px 30px -12px rgba(6, 33, 95, 0.25);
   --font-head: 'Poppins', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --container: 1180px;
@@ -164,7 +164,7 @@ p {
 .btn--call {
   background: var(--accent);
   color: #fff;
-  box-shadow: 0 8px 20px -8px rgba(255, 107, 0, 0.7);
+  box-shadow: 0 8px 20px -8px rgba(253, 95, 0, 0.7);
 }
 
 .btn--call:hover {
@@ -220,7 +220,7 @@ p {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   overflow: hidden;
-  box-shadow: 0 2px 6px rgba(10, 35, 66, 0.04);
+  box-shadow: 0 2px 6px rgba(6, 33, 95, 0.04);
   transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 

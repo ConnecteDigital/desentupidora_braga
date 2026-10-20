@@ -33,7 +33,7 @@ const business = {
   url: site.url,
   telephone: `+${site.phone}`,
   image,
-  logo: new URL('/favicon.svg', site.url).href,
+  logo: new URL('/img/logo.png', site.url).href,
   priceRange: '$$',
   address: {
     '@type': 'PostalAddress',
@@ -79,8 +79,11 @@ const jsonLd = [business, breadcrumb, ...schema].filter(Boolean);
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex, follow" />}
-    <meta name="theme-color" content="#0a2342" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#083bc3" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preload" href="/img/logo.webp" as="image" type="image/webp" />
     <link rel="sitemap" href="/sitemap-index.xml" />
 
     <meta property="og:locale" content="pt_BR" />

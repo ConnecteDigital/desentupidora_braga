@@ -1,51 +1,24 @@
 ---
-// Logo provisório em SVG. Substituir pelo logo oficial quando o cliente enviar.
 interface Props {
   light?: boolean;
 }
 const { light = false } = Astro.props;
+const file = light ? 'logo-branca' : 'logo';
 ---
-<span class:list={['logo', { 'logo--light': light }]}>
-  <svg class="logo__mark" width="42" height="42" viewBox="0 0 48 48" aria-hidden="true">
-    <rect width="48" height="48" rx="12" fill="#0a2342" />
-    <path d="M24 9c5.5 7 9 11.8 9 16.5a9 9 0 0 1-18 0C15 20.8 18.5 16 24 9z" fill="#ff6b00" />
-    <path d="M20 26.5a4 4 0 0 0 4 4" stroke="#fff" stroke-width="2.4" stroke-linecap="round" fill="none" />
-    <path d="M10 39h28" stroke="#5aa2ff" stroke-width="3" stroke-linecap="round" />
-  </svg>
-  <span class="logo__text">
-    <span class="logo__top">Desentupidora</span>
-    <span class="logo__name">BRAGA</span>
-  </span>
-</span>
+<picture class="logo">
+  <source srcset={`/img/${file}.webp`} type="image/webp" />
+  <img src={`/img/${file}.png`} alt="Desentupidora Braga" width="610" height="160" />
+</picture>
 
 <style>
-  .logo {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
+  .logo img {
+    display: block;
+    height: 52px;
+    width: auto;
   }
-  .logo__text {
-    display: flex;
-    flex-direction: column;
-    line-height: 1;
-    font-family: var(--font-head);
-  }
-  .logo__top {
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: var(--muted);
-    letter-spacing: 0.02em;
-  }
-  .logo__name {
-    font-size: 1.45rem;
-    font-weight: 800;
-    color: var(--navy);
-    letter-spacing: 0.04em;
-  }
-  .logo--light .logo__top {
-    color: #9fb4cc;
-  }
-  .logo--light .logo__name {
-    color: #fff;
+  @media (max-width: 720px) {
+    .logo img {
+      height: 40px;
+    }
   }
 </style>
