@@ -75,6 +75,18 @@ const jsonLd = [business, breadcrumb, ...schema].filter(Boolean);
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {site.gtmId && (
+      <script is:inline define:vars={{ id: site.gtmId }}>
+        (function (w, d, s, l, i) {
+          w[l] = w[l] || [];
+          w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+          var f = d.getElementsByTagName(s)[0], j = d.createElement(s);
+          j.async = true;
+          j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i;
+          f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', id);
+      </script>
+    )}
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
@@ -104,18 +116,6 @@ const jsonLd = [business, breadcrumb, ...schema].filter(Boolean);
 
     {jsonLd.map((data) => <script type="application/ld+json" set:html={JSON.stringify(data)} />)}
 
-    {site.gtmId && (
-      <script is:inline define:vars={{ id: site.gtmId }}>
-        (function (w, d, s, l, i) {
-          w[l] = w[l] || [];
-          w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-          var f = d.getElementsByTagName(s)[0], j = d.createElement(s);
-          j.async = true;
-          j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i;
-          f.parentNode.insertBefore(j, f);
-        })(window, document, 'script', 'dataLayer', id);
-      </script>
-    )}
   </head>
   <body>
     {site.gtmId && (
