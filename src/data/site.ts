@@ -18,7 +18,8 @@ export const site = {
   region: 'Porto Alegre e Região Metropolitana',
   arrival: '20 minutos',
   // IDs de rastreamento (deixe vazio para desativar)
-  gtmId: 'GTM-TD7BB5FC',
+  gtmId: 'GTM-MMLZGVTQ',
+  googleAdsId: 'AW-18548067950',
 };
 
 export const whatsappMessage = 'Olá, Vim pelo site, Desentupidora Braga, e gostaria de um atendimento Urgente !';

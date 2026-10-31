@@ -87,6 +87,18 @@ const jsonLd = [business, breadcrumb, ...schema].filter(Boolean);
         })(window, document, 'script', 'dataLayer', id);
       </script>
     )}
+    {site.googleAdsId && (
+      <>
+        <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${site.googleAdsId}`}></script>
+        <script is:inline define:vars={{ adsId: site.googleAdsId }}>
+          window.dataLayer = window.dataLayer || [];
+          function gtag() { dataLayer.push(arguments); }
+          window.gtag = gtag;
+          gtag('js', new Date());
+          gtag('config', adsId);
+        </script>
+      </>
+    )}
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
