@@ -246,12 +246,14 @@ const isActive = (prefix: string) => (prefix === '/' ? path === '/' : path.start
       overflow-y: auto;
       opacity: 0;
       visibility: hidden;
+      pointer-events: none;
       transform: translateY(-8px);
       transition: all 0.2s ease;
     }
     .header.is-open .nav {
       opacity: 1;
       visibility: visible;
+      pointer-events: auto;
       transform: none;
     }
     .header.is-open :global(.i-open) {
@@ -271,7 +273,8 @@ const isActive = (prefix: string) => (prefix === '/' ? path === '/' : path.start
     .drop {
       position: static;
       opacity: 1;
-      visibility: visible;
+      /* herda do menu: invisível e sem receber toques enquanto o menu está fechado */
+      visibility: inherit;
       transform: none;
       box-shadow: none;
       border: 0;
