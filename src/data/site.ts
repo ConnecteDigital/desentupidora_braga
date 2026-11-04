@@ -4,9 +4,9 @@ export const site = {
   shortName: 'Braga',
   domain: 'desentupidorabraga.com.br',
   url: 'https://desentupidorabraga.com.br',
-  phone: '5551985515822',
-  phoneDisplay: '(51) 98551-5822',
-  phoneHref: 'tel:051985515822',
+  phone: '5551981330142',
+  phoneDisplay: '(51) 98133-0142',
+  phoneHref: 'tel:051 98133-0142',
   // Preencher quando o cliente enviar
   email: '',
   cnpj: '',
