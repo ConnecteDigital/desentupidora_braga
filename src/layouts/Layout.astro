@@ -151,5 +151,50 @@ const jsonLd = [business, breadcrumb, ...schema].filter(Boolean);
         window.dataLayer.push({ event: 'clique_contato', tipo_contato: tipo, pagina: location.pathname });
       });
     </script>
+    <script is:inline>
+(function () {
+  var ENDPOINT = "https://ofuecftfvtpgzupqmdcx.supabase.co/functions/v1/track";
+  var SITE_KEY = "braga_d89212f13306";
+  try {
+    var q = new URLSearchParams(location.search);
+    var gclid = q.get("gclid") || q.get("gbraid") || q.get("wbraid");
+    if (!gclid) return;
+
+    var vid;
+    try { vid = localStorage.getItem("_rc_vid"); if (!vid) { vid = Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem("_rc_vid", vid); } } catch (e) {}
+
+    var parts = [navigator.userAgent, navigator.language, screen.width + "x" + screen.height, screen.colorDepth,
+      (Intl.DateTimeFormat().resolvedOptions().timeZone || ""), navigator.hardwareConcurrency || "", navigator.platform || ""].join("|");
+    var h = 5381; for (var i = 0; i < parts.length; i++) { h = ((h << 5) + h + parts.charCodeAt(i)) >>> 0; }
+    var fp = h.toString(36);
+
+    var payload = {
+      k: SITE_KEY, gclid: gclid, fp: fp, vid: vid,
+      kw: q.get("kw"), mt: q.get("mt"), cid: q.get("cid"), agid: q.get("agid"), dev: q.get("dev"), net: q.get("net"),
+      page: location.origin + location.pathname, ref: document.referrer
+    };
+    function send() {
+      var body = JSON.stringify(payload);
+      if (!(navigator.sendBeacon && navigator.sendBeacon(ENDPOINT, new Blob([body], { type: "text/plain" })))) {
+        fetch(ENDPOINT, { method: "POST", body: body, keepalive: true, mode: "no-cors" });
+      }
+    }
+    var done = false;
+    function go() { if (!done) { done = true; send(); } }
+    setTimeout(go, 1500);
+    fetch("https://api6.ipify.org?format=json").then(function (r) { return r.json(); })
+      .then(function (j) { if (j && j.ip) payload.ip6 = j.ip; go(); })["catch"](go);
+
+    var t0 = Date.now(), sent = false;
+    function leave() {
+      if (sent) return; sent = true;
+      var b = JSON.stringify({ k: SITE_KEY, gclid: gclid, ev: "leave", t: Date.now() - t0 });
+      if (navigator.sendBeacon) navigator.sendBeacon(ENDPOINT, new Blob([b], { type: "text/plain" }));
+    }
+    addEventListener("pagehide", leave);
+    document.addEventListener("visibilitychange", function () { if (document.visibilityState === "hidden") leave(); });
+  } catch (e) {}
+})();
+</script>
   </body>
 </html>
