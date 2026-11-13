@@ -196,5 +196,26 @@ const jsonLd = [business, breadcrumb, ...schema].filter(Boolean);
   } catch (e) {}
 })();
 </script>
+    <script is:inline>
+      // Avisa o robô de cliques que o visitante pago interagiu (tocou em botão/link ou rolou a página),
+      // para a regra de "saiu em menos de 3s" não bloquear quem liga ou chama no WhatsApp na hora.
+      (function () {
+        try {
+          var q = new URLSearchParams(location.search);
+          var gclid = q.get('gclid') || q.get('gbraid') || q.get('wbraid');
+          if (!gclid || !navigator.sendBeacon) return;
+          var done = false;
+          function engaged() {
+            if (done) return;
+            done = true;
+            var b = JSON.stringify({ k: 'braga_d89212f13306', gclid: gclid, ev: 'engaged' });
+            navigator.sendBeacon('https://ofuecftfvtpgzupqmdcx.supabase.co/functions/v1/track', new Blob([b], { type: 'text/plain' }));
+          }
+          document.addEventListener('pointerdown', function (e) { if (e.target.closest && e.target.closest('a, button, input, select, textarea, summary')) engaged(); }, true);
+          document.addEventListener('keydown', engaged, true);
+          addEventListener('scroll', function () { if (scrollY > 80) engaged(); }, { passive: true });
+        } catch (e) {}
+      })();
+    </script>
   </body>
 </html>
